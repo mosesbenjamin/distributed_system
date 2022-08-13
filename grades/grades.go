@@ -1,6 +1,9 @@
 package grades
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 type Student struct {
 	ID        int
@@ -19,7 +22,10 @@ func (s Student) Average() float32 {
 
 type Students []Student
 
-var students Students
+var (
+	students      Students
+	studentsMutex sync.Mutex
+)
 
 func (s Students) GetByID(id int) (*Student, error) {
 	for i := range s {
@@ -27,13 +33,14 @@ func (s Students) GetByID(id int) (*Student, error) {
 			return &s[i], nil
 		}
 	}
-	return nil, fmt.Errorf("student with ID %v not found", id)
+
+	return nil, fmt.Errorf("Student with ID '%v' not found", id)
 }
 
 type GradeType string
 
 const (
-	GradeTest     = GradeType("test")
+	GradeTest     = GradeType("Test")
 	GradeHomework = GradeType("Homework")
 	GradeQuiz     = GradeType("Quiz")
 )
