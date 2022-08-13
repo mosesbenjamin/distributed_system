@@ -12,7 +12,7 @@ const ServicesURL = "http://localhost" + ServerPort + "/services"
 
 type registry struct {
 	registrations []Registration
-	mutex         *sync.Mutex
+	mutex         *sync.RWMutex
 }
 
 func (r *registry) add(reg Registration) error {
@@ -23,15 +23,16 @@ func (r *registry) add(reg Registration) error {
 }
 
 var reg = registry{registrations: make([]Registration, 0),
-	mutex: new(sync.Mutex)}
+	mutex: new(sync.RWMutex),
+}
 
 type RegistryService struct{}
 
-func (s RegistryService) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (s RegistryService) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	log.Println("Request received")
-	switch r.Method {
+	switch req.Method {
 	case http.MethodPost:
-		dec := json.NewDecoder(r.Body)
+		dec := json.NewDecoder(req.Body)
 		var r Registration
 		err := dec.Decode(&r)
 		if err != nil {
@@ -39,7 +40,7 @@ func (s RegistryService) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		log.Printf("Adding service: %v with URL: %v\n", r.ServiceName, r.ServiceURL)
+		log.Printf("Adding service: %v with URL: %v", r.ServiceName, r.ServiceURL)
 		err = reg.add(r)
 		if err != nil {
 			log.Println(err)
@@ -48,6 +49,5 @@ func (s RegistryService) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
 	}
 }
