@@ -1,3 +1,3 @@
-module github.com/mosesbenjamin/distributed_app
+module github.com/mosesbenjamin/distributed_system
 
 go 1.18

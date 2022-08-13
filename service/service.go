@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/mosesbenjamin/distributed_app/registry"
+	"github.com/mosesbenjamin/distributed_system/registry"
 )
 
 func Start(ctx context.Context, host, port string, reg registry.Registration, registerHandlersFunc func()) (context.Context, error) {

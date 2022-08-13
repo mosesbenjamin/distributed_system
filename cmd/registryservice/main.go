@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/mosesbenjamin/distributed_app/registry"
+	"github.com/mosesbenjamin/distributed_system/registry"
 )
 
 func main() {

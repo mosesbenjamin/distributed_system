@@ -5,9 +5,9 @@ import (
 	"fmt"
 	stlog "log"
 
-	"github.com/mosesbenjamin/distributed_app/log"
-	"github.com/mosesbenjamin/distributed_app/registry"
-	"github.com/mosesbenjamin/distributed_app/service"
+	"github.com/mosesbenjamin/distributed_system/log"
+	"github.com/mosesbenjamin/distributed_system/registry"
+	"github.com/mosesbenjamin/distributed_system/service"
 )
 
 func main() {
